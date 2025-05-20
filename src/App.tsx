@@ -1,15 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { cn } from "./lib/utils";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@/hooks/use-theme";
+import Index from "@/pages/index";
+import NotFound from "@/pages/not-found";
 
-export default function App() {
-  const [count, setCount] = useState(0);
-  return (
-    <div className={cn("flex flex-row items-center justify-center space-x-2")}>
-      <img src="/vite.svg" alt="it's react" />
-      <div className={cn("flex items-center justify-center min-h-screen")}>
-        <Button onClick={() => setCount(count + 1)}>Click me {count}</Button>
-      </div>
-    </div>
-  );
-}
+const App = () => (
+  <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+  </ThemeProvider>
+);
+
+export default App;
