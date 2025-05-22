@@ -1,7 +1,7 @@
-
 import { useEffect } from "react";
 import Navbar from "@/components/navbar";
 import { useLocation } from "react-router-dom";
+import HeroSection from "@/components/hero-section";
 
 const Index = () => {
   const location = useLocation();
@@ -30,6 +30,7 @@ const Index = () => {
   return (
     <main className="relative min-h-screen">
       <Navbar />
+      <HeroSection />
     </main>
   );
 };
