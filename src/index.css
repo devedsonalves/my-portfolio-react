@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 95%;
+    --foreground: 0 0% 0%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 0%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+
+    --primary: 250 100% 50%;
+    --primary-foreground: 250 0% 0%;
+
+    --secondary: 360 0% 85%;
+    --secondary-foreground: 222 47% 11%;
+
+    --accent: 0 0% 85%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 360 0% 70%;
+    --input: 214 32% 91%;
+    --ring: 222 84% 5%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --foreground: 0 0% 100%;
+
+    --card: 360 0% 15%;
+    --card-foreground: 213 31% 91%;
+
+    --muted: 360 0% 9%;
+    --muted-foreground: 215 20% 65%;
+
+    --popover: 225 0% 0%;
+    --popover-foreground: 215 20% 65%;
+
+    --primary: 250 100% 75%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 360 0% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 360 0% 7.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 360 0% 40%;
+    --input: 216 34% 17%;
+    --ring: 213 31% 91%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-zinc-950 text-foreground;
+    font-family: "Lexend Deca", sans-serif;
+  }
+}
