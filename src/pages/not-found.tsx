@@ -1,80 +1,48 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Home, ArrowLeft } from "lucide-react";
+import { ArrowUpRight, MessageCircle } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { ChatHeader, ChatSidebar } from '@/components/chat/chat-navigation'
+import { PixelAvatar } from '@/components/chat/pixel-avatar'
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
+  const navigate = useNavigate()
+  const navigation = {
+    onAsk: (question: string) =>
+      navigate(`/chat?${new URLSearchParams({ query: question })}`),
+    onReset: () => navigate('/'),
+    busy: false
+  }
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background relative overflow-hidden">
-      <div className="relative text-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-8xl md:text-9xl font-bold text-primary mb-4">404</h1>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <h2 className="text-2xl md:text-3xl font-semibold mb-4">
-            Oops! Página não encontrada
-          </h2>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-            A página que você está procurando parece não existir ou foi movida para outro lugar.
+    <div className="portfolio-chat">
+      <a className="chat-skip-link" href="#not-found-main">
+        Pular para o conteúdo
+      </a>
+      <ChatSidebar {...navigation} />
+      <div className="chat-workspace">
+        <ChatHeader {...navigation} />
+        <main id="not-found-main" className="not-found-main">
+          <span className="not-found-code">ERRO 404 · FORA DA CONVERSA</span>
+          <PixelAvatar className="not-found-avatar" />
+          <h1>
+            Parece que perdemos
+            <br />
+            <em>o fio da conversa.</em>
+          </h1>
+          <div className="not-found-message">
+            <MessageCircle size={21} aria-hidden="true" />
+            <p>
+              Não encontrei essa página. Mas posso te ajudar a conhecer meus
+              projetos, minha trajetória ou começar uma nova conversa.
+            </p>
+          </div>
+          <Link to="/" className="not-found-return">
+            Voltar para o chat <ArrowUpRight size={17} />
+          </Link>
+          <p className="not-found-hint">
+            Uma boa conversa sempre tem um recomeço.
           </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <Button
-            variant="default"
-            size="lg"
-            onClick={() => window.history.back()}
-            className="min-w-[200px]"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Voltar
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            asChild
-            className="min-w-[200px]"
-          >
-            <a href="/">
-              <Home className="mr-2 h-4 w-4" />
-              Página Inicial
-            </a>
-          </Button>
-        </motion.div>
+        </main>
       </div>
     </div>
-  );
-};
-
-export default NotFound;
+  )
+}
+export default NotFound

@@ -1,27 +1,58 @@
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "@/hooks/use-theme";
-import { Button } from "@/components/ui/button";
+import { Moon, Sun } from 'lucide-react'
+import { flushSync } from 'react-dom'
+import { useTheme } from '@/hooks/use-theme'
 
-export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+const ThemeToggle = () => {
+  const { theme, setTheme } = useTheme()
+  const label = theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
+  const toggleTheme = (button: HTMLButtonElement) => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark'
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+    const canAnimate = typeof document.startViewTransition === 'function'
+
+    if (!canAnimate || reducedMotion) {
+      setTheme(nextTheme)
+      return
+    }
+
+    const bounds = button.getBoundingClientRect()
+    const x = bounds.left + bounds.width / 2
+    const y = bounds.top + bounds.height / 2
+    const radius = Math.ceil(
+      Math.max(
+        Math.hypot(x, y),
+        Math.hypot(innerWidth - x, y),
+        Math.hypot(x, innerHeight - y),
+        Math.hypot(innerWidth - x, innerHeight - y)
+      )
+    )
+
+    document.documentElement.style.setProperty('--theme-origin-x', `${x}px`)
+    document.documentElement.style.setProperty('--theme-origin-y', `${y}px`)
+    document.documentElement.style.setProperty(
+      '--theme-reveal-radius',
+      `${radius}px`
+    )
+    try {
+      document.startViewTransition(() => flushSync(() => setTheme(nextTheme)))
+    } catch {
+      setTheme(nextTheme)
+    }
+  }
 
   return (
-    <Button 
-      variant="ghost" 
-      size="icon"
-      onClick={toggleTheme}
-      className="rounded-full hover:bg-foreground/10"
+    <button
+      className="theme-toggle"
+      type="button"
+      onClick={event => toggleTheme(event.currentTarget)}
+      aria-label={label}
+      title={label}
     >
-      {theme === "dark" ? (
-        <Sun className="h-5 w-5 transition-all" />
-      ) : (
-        <Moon className="h-5 w-5 transition-all" />
-      )}
-      <span className="sr-only">Toggle theme</span>
-    </Button>
-  );
+      {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+    </button>
+  )
 }
+export default ThemeToggle
